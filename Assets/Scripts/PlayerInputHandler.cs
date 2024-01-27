@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using ModestTree;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
@@ -13,9 +11,14 @@ public class InputHandler : MonoBehaviour
 
     private List<KeyCode> keyboardKeys = new List<KeyCode>();
 
+    private PlayerController playerController;
+    private PlayerInput playerInput;
+
     void Start()
     {
-       controllerInputActions = GetComponent<ControllerInputActions>();
+       //controllerInputActions = GetComponent<ControllerInputActions>();
+       playerController = GetComponent<PlayerController>();
+       playerInput = GetComponent<PlayerInput>();
 
        if (playerNumber == 1)
        {
@@ -37,6 +40,7 @@ public class InputHandler : MonoBehaviour
 
     void Update()
     {
+        /*playerInput.ac
         var actionPressed = controllerInputActions.Player.Action.IsPressed();
         var value = controllerInputActions.Player.Direction.ReadValue<Vector2>();
 
@@ -56,7 +60,7 @@ public class InputHandler : MonoBehaviour
             if (Input.GetKeyDown(keyboardKeys[4]))
                 actionPressed = true;
         }
-        
-               
+
+        playerController.ApplyControls(vector);*/
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    float gas;
-    float steering;
+    Vector2 steering;
 
     void Start()
     {        
@@ -23,9 +22,17 @@ public class PlayerController : MonoBehaviour
     {
     }
 
-    public void ApplyControls(float _gas, float _steering)
+    public void ApplyControls(Vector2 _steering)
     {
-        gas = _gas;
         steering = _steering;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Chicken c = other.gameObject.GetComponentInParent<Chicken>();
+        if(c != null)
+        {
+            c.SetOwner(this);
+        }
     }
 }
