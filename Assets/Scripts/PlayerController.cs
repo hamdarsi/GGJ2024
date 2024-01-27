@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
         steering.x = Input.GetAxis("Horizontal");
         steering.y = Input.GetAxis("Vertical");
 
-        Vector3 force = new Vector3(-steering.y, 0f, steering.x);
+        Vector3 force = new Vector3(steering.x, 0f, steering.y);
 
         rb.AddForce(forceMagnitude * force);
 
