@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
@@ -10,15 +11,25 @@ public class GameController : MonoBehaviour
     public Transform playerRoot;
     public CinemachineTargetGroup cinemachineTargetGroup;
     public Material[] playerMaterials;
+    public AudioSource matchStartAudio;
     
-    private List<PlayerController> players = new();
+    private readonly List<PlayerController> players = new();
 
     private void Start()
     {
-        StartGame();
+        StartCoroutine(StartGame());
+    }
+
+    private IEnumerator StartGame()
+    {
+        InitializePlayers();
+        matchStartAudio.Play();
+        yield return new WaitForSeconds(3);
+        foreach (var player in players)
+            player.Unfreeze();
     }
     
-    private void StartGame()
+    private void InitializePlayers()
     {
         var deltaAngle = 360f / howManyPlayers * Mathf.Deg2Rad;
         var angle = 180f;
@@ -33,6 +44,7 @@ public class GameController : MonoBehaviour
             var playerScript = playerObject.GetComponent<PlayerController>();
             playerScript.playerNumber = i + 1;
             playerScript.material = playerMaterials[i];
+            playerScript.Freeze();
             players.Add(playerScript);
             
             angle += deltaAngle;

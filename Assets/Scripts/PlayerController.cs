@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 steering;
     private Vector2 joyStickSteeringInput;
     private Vector2 keyboardSteeringInput;
+    private bool frozen = true;
     
     private readonly List<KeyCode> keyboardKeys = new();
 
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 10f;
     public Material material;
     public GameObject materialSurface;
+    public AudioSource audioIdle;
+    public AudioSource audioRunning;
     
     void Start()
     {
@@ -43,6 +46,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (frozen)
+            return;
+        
         keyboardSteeringInput.x = 0;
         keyboardSteeringInput.y = 0;
         if (keyboardKeys.Count > 0)
@@ -99,5 +105,17 @@ public class PlayerController : MonoBehaviour
                 ownedChickens.RemoveAt(ownedChickens.Count - 1);
             }
         }
+    }
+
+    public void Unfreeze()
+    {
+        frozen = false;
+        audioRunning.Play();
+    }
+
+    public void Freeze()
+    {
+        frozen = true;
+        audioIdle.Play();
     }
 }
