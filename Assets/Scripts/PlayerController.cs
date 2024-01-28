@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = System.Random;
 
 public class PlayerController : MonoBehaviour
 {
     int score = 0;
 
-    public List<Chicken> ownedChickens = new List<Chicken>();
+    public List<Chicken> ownedChickens = new();
 
     private Vector2 steering;
     private Vector2 joyStickSteeringInput;
@@ -42,6 +43,12 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     public GameObject collisionPE;
+
+    private static readonly Random random = new();
+    public AudioSource[] carCollisionAudios;
+    public AudioSource playerActionAudio;
+    public AudioSource[] stunAudio;
+    public AudioSource itemPickup;
 
     void Start()
     {
@@ -135,6 +142,7 @@ public class PlayerController : MonoBehaviour
 
         attacking = true;
         attackTimer = attackCooldown;
+        playerActionAudio.Play();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -145,25 +153,27 @@ public class PlayerController : MonoBehaviour
             ownedChickens.Add(c);
             c.SetOwner(this);
             score += 10;
+            itemPickup.Play();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player"
-            && (Time.time - lastCollisionTime) > collisionCooldownTime)
+        if (collision.gameObject.CompareTag("Player") && Time.time - lastCollisionTime > collisionCooldownTime)
         {
             lastCollisionTime = Time.time;
 
-            PlayerController op = collision.gameObject.GetComponent<PlayerController>();
+            var op = collision.gameObject.GetComponent<PlayerController>();
+            
+            carCollisionAudios[random.Next(carCollisionAudios.Length)].Play();
 
             if (!attacking)
             {
                 if (ownedChickens.Count > 0)
                 {
                     // remove one chicken
-                    Chicken c = ownedChickens[ownedChickens.Count - 1];
-                    GameObject.Destroy(c.gameObject);
+                    var c = ownedChickens[ownedChickens.Count - 1];
+                    Destroy(c.gameObject);
                     ownedChickens.RemoveAt(ownedChickens.Count - 1);
                 }
                 else
@@ -182,8 +192,7 @@ public class PlayerController : MonoBehaviour
                 score += 50;
             }
 
-            GameObject test = GameObject.Instantiate(collisionPE, collision.contacts[0].point, Quaternion.identity);
-            //GameObject.Destroy(test, 1f);
+            Instantiate(collisionPE, collision.contacts[0].point, Quaternion.identity);
         }
     }
 
