@@ -43,8 +43,8 @@ public class PlayerController : MonoBehaviour
         keyboardSteeringInput.y = 0;
         if (keyboardKeys.Count > 0)
         {
-            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[0]) ? -1 : 0;
-            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[1]) ? 1 : 0;
+            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[0]) ? 1 : 0;
+            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[1]) ? -1 : 0;
             keyboardSteeringInput.x += Input.GetKey(keyboardKeys[2]) ? -1 : 0;
             keyboardSteeringInput.x += Input.GetKey(keyboardKeys[3]) ? 1 : 0;
 
@@ -54,7 +54,6 @@ public class PlayerController : MonoBehaviour
 
         steering = keyboardSteeringInput.sqrMagnitude > 0 ? keyboardSteeringInput : joyStickSteeringInput;
         
-        debugText.text = steering.ToString();
         var rb = GetComponent<Rigidbody>();
         var force = new Vector3(steering.x, 0f, steering.y);
 
