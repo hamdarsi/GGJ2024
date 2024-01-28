@@ -35,4 +35,9 @@ public class Chicken : MonoBehaviour
 
         GetComponentInChildren<Collider>().enabled = false;
     }
+
+    public bool IsOwned()
+    {
+        return owner != null;
+    }
 }

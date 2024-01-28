@@ -328,7 +328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189080408}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38273707, y: 0.5975237, z: -0.5871849, w: -0.38947615}
+  m_LocalRotation: {x: -0.14220788, y: 0.69841594, z: -0.6863313, w: -0.14471182}
   m_LocalPosition: {x: 0, y: 203.94, z: -205.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -551,7 +551,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38273707, y: 0.5975237, z: -0.5871849, w: -0.38947615}
+  m_LocalRotation: {x: -0.14220788, y: 0.69841594, z: -0.6863313, w: -0.14471182}
   m_LocalPosition: {x: 0, y: 203.94, z: -205.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1104,9 +1104,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2887436154482026273, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
         type: 3}
+      propertyPath: maxChickens
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2887436154482026273, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
+        type: 3}
       propertyPath: defSpawnDelay
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 2887436154482026273, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
+        type: 3}
+      propertyPath: chickenTemplate
+      value: 
+      objectReference: {fileID: 2187277150503575989, guid: f9817246b763be64a9442bc035431539,
+        type: 3}
     - target: {fileID: 2887436154482026278, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
         type: 3}
       propertyPath: m_Name
@@ -1115,7 +1126,7 @@ PrefabInstance:
     - target: {fileID: 2887436154482026278, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1841,7 +1852,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c09ea26e7b5aa144f96d6ef0559555c6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c09ea26e7b5aa144f96d6ef0559555c6,
         type: 3}
@@ -1851,7 +1862,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c09ea26e7b5aa144f96d6ef0559555c6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.93
+      value: -3.956
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c09ea26e7b5aa144f96d6ef0559555c6,
         type: 3}
@@ -2008,6 +2019,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ObjectPooler
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696325841222784601, guid: c964187e9f3a38346a90ad9969af6cfe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1696325841222784602, guid: c964187e9f3a38346a90ad9969af6cfe,
         type: 3}

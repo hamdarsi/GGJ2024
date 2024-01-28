@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public int playerNumber;
     public float forceMagnitude = 1f;
     public float rotationSpeed = 10f;
-    public TMP_Text debugText;
+    // public TMP_Text debugText;
     
     void Start()
     {

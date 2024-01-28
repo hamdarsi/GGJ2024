@@ -4,34 +4,60 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-	public Vector3 spawnArea;
-	public float defSpawnDelay;
-	public float spawnTimer;
+	public GameObject chickenTemplate;
+	float timer;
+
+	List<Chicken> chickens = new List<Chicken>();
+	public int maxChickens = 2;
+
+	public float spawnRadius = 7f;
 
 	void Start()
 	{
-		spawnTimer = defSpawnDelay;
-	}
+        ResetTimer();
+    }
 
 	void Update()
 	{
-		spawnTimer -= Time.deltaTime;
-		if(spawnTimer <= 0f)
+		if (chickenTemplate == null) return;
+
+        timer -= Time.deltaTime;
+		if(timer <= 0f)
 		{
-			SpawnObjects();
-			spawnTimer = defSpawnDelay;
+			int nChickens = 0;
+			foreach(Chicken ch in chickens)
+			{
+				if(!ch.IsOwned())
+				{
+					nChickens++;
+				}
+			}
+			if(nChickens < maxChickens)
+			{
+                GameObject newChicken = GameObject.Instantiate(chickenTemplate, GetRandomPos(), GetRandomRot());
+                chickens.Add(newChicken.GetComponent<Chicken>());
+                ResetTimer();
+            }
+			else
+			{
+				ResetTimer();
+            }
 		}
 	}
 
-	void SpawnObjects()
+	void ResetTimer()
 	{
-		MyPooler.ObjectPooler.Instance.GetFromPool("Chicken", GetRandomPos(), Quaternion.identity);
+		timer = Random.Range(2.5f, 5f);
 	}
 
 	Vector3 GetRandomPos()
 	{
-		Vector3 randomPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 0f, Random.Range(-spawnArea.z / 2, spawnArea.z / 2));
-		randomPosition += transform.position;
-		return randomPosition;
+        Vector2 v = spawnRadius * Random.insideUnitCircle;
+        return new Vector3(v.x, 0f, v.y);
+	}
+
+	Quaternion GetRandomRot()
+	{
+		return Quaternion.Euler(0f, 180f, 0f);
 	}
 }
