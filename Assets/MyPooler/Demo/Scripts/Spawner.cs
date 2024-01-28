@@ -27,7 +27,7 @@ public class Spawner : MonoBehaviour
 			int nChickens = 0;
 			foreach(Chicken ch in chickens)
 			{
-				if(!ch.IsOwned())
+				if(ch != null && !ch.IsOwned())
 				{
 					nChickens++;
 				}

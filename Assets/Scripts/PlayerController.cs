@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public int nOwnedChickens { get; set; }
+    public List<Chicken> ownedChickens = new List<Chicken>();
+
     private Vector2 steering;
     private Vector2 joyStickSteeringInput;
     private Vector2 keyboardSteeringInput;
@@ -79,7 +80,24 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var c = other.gameObject.GetComponentInParent<Chicken>();
-        if(c != null)
+        if (c != null)
+        {
+            ownedChickens.Add(c);
             c.SetOwner(this);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            Debug.Log(Time.time);
+            if (ownedChickens.Count > 0)
+            {
+                Chicken c = ownedChickens[ownedChickens.Count - 1];
+                GameObject.Destroy(c.gameObject);
+                ownedChickens.RemoveAt(ownedChickens.Count - 1);
+            }
+        }
     }
 }

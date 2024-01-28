@@ -19,7 +19,7 @@ public class Chicken : MonoBehaviour
     {
         if(owner != null)
         {
-            float initTheta = (ownedIndex * 360f / owner.nOwnedChickens) * Mathf.Deg2Rad;
+            float initTheta = (ownedIndex * 360f / owner.ownedChickens.Count) * Mathf.Deg2Rad;
             float theta = ownedRotationSpeed * Time.time + initTheta;
             Vector3 offset = new Vector3 (Mathf.Sin(theta), 0f, Mathf.Cos(theta));
             transform.position = owner.transform.position + ownedRotationRadius * offset;
@@ -29,10 +29,7 @@ public class Chicken : MonoBehaviour
     public void SetOwner(PlayerController _owner)
     {
         owner = _owner;
-
-        ownedIndex = owner.nOwnedChickens;
-        owner.nOwnedChickens++;
-
+        ownedIndex = owner.ownedChickens.Count;
         GetComponentInChildren<Collider>().enabled = false;
     }
 
