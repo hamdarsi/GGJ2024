@@ -110,7 +110,8 @@ MonoBehaviour:
   stunRotationSpeed: 1000
   attackForce: 30
   attackLength: 0.5
-  attackCooldown: 1
+  attackCooldown: 0.5
+  scoreText: {fileID: 0}
 --- !u!114 &5641577802215404422
 MonoBehaviour:
   m_ObjectHideFlags: 0

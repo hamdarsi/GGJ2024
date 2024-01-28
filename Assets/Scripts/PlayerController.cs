@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    int score = 0;
+
     public List<Chicken> ownedChickens = new List<Chicken>();
 
     private Vector2 steering;
@@ -36,7 +38,9 @@ public class PlayerController : MonoBehaviour
     public float attackLength = 0.5f;
     public float attackCooldown = 1f;
     float attackTimer = 0f;
-    
+
+    public TextMeshProUGUI scoreText;
+
     void Start()
     {
         if (playerNumber == 1)
@@ -61,6 +65,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (scoreText != null)
+        {
+            scoreText.text = score.ToString();
+        }
+
         if (frozen)
             return;
         
@@ -99,8 +108,14 @@ public class PlayerController : MonoBehaviour
                 transform.forward = Vector3.Lerp(transform.forward, rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
         }
 
-        attackTimer -= Time.fixedDeltaTime;
-        attacking = attackTimer > 0;
+        if (attacking)
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer < 0)
+            {
+                attacking = false;
+            }
+        }
     }
 
     public void OnPlayerDirectionInput(InputAction.CallbackContext context)
@@ -127,6 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             ownedChickens.Add(c);
             c.SetOwner(this);
+            score += 10;
         }
     }
 
@@ -136,17 +152,29 @@ public class PlayerController : MonoBehaviour
             && (Time.time - lastCollisionTime) > collisionCooldownTime)
         {
             lastCollisionTime = Time.time;
-            if (ownedChickens.Count > 0)
+
+            PlayerController op = collision.gameObject.GetComponent<PlayerController>();
+
+            if (ownedChickens.Count > 0 && !attacking)
             {
                 // remove one chicken
                 Chicken c = ownedChickens[ownedChickens.Count - 1];
                 GameObject.Destroy(c.gameObject);
                 ownedChickens.RemoveAt(ownedChickens.Count - 1);
             }
-            else
+
+            if (op.attacking)
             {
-                // stun
                 Stun();
+            }
+            else if (!attacking && ownedChickens.Count == 0)
+            {
+                Stun();
+            }
+
+            if(attacking)
+            {
+                score += 50;
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -14,6 +15,8 @@ public class GameController : MonoBehaviour
     public AudioSource matchStartAudio;
     
     private readonly List<PlayerController> players = new();
+
+    public TextMeshProUGUI[] scoreTexts;
 
     private void Start()
     {
@@ -44,6 +47,7 @@ public class GameController : MonoBehaviour
             var playerScript = playerObject.GetComponent<PlayerController>();
             playerScript.playerNumber = i + 1;
             playerScript.material = playerMaterials[i];
+            playerScript.scoreText = scoreTexts[i];
             playerScript.Freeze();
             players.Add(playerScript);
             
