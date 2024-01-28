@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ec0a882f903d74f961f839f0fa0b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownedChickens: []
   playerNumber: 0
   forceMagnitude: 25
   rotationSpeed: 10
@@ -104,6 +105,12 @@ MonoBehaviour:
   materialSurface: {fileID: 2803897892269725448}
   audioIdle: {fileID: 5092832179479872368}
   audioRunning: {fileID: 5840674410811561537}
+  collisionCooldownTime: 1
+  stunMaxTime: 1
+  stunRotationSpeed: 3
+  attackForce: 30
+  attackLength: 0.5
+  attackCooldown: 1
 --- !u!114 &5641577802215404422
 MonoBehaviour:
   m_ObjectHideFlags: 0
