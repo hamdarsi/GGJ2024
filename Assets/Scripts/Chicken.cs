@@ -6,22 +6,23 @@ public class Chicken : MonoBehaviour
 {
     PlayerController owner;
 
-    float timer = 0f;
+    int ownedIndex;
+
     public float ownedRotationSpeed = 5f;
     public float ownedRotationRadius = 1f;
 
     void Start()
     {
-        
     }
 
     void Update()
     {
         if(owner != null)
         {
-            Vector3 offset = new Vector3 (Mathf.Sin(ownedRotationSpeed * timer), 0f, Mathf.Cos(ownedRotationSpeed * timer));
+            float initTheta = (ownedIndex * 360f / owner.nOwnedChickens) * Mathf.Deg2Rad;
+            float theta = ownedRotationSpeed * Time.time + initTheta;
+            Vector3 offset = new Vector3 (Mathf.Sin(theta), 0f, Mathf.Cos(theta));
             transform.position = owner.transform.position + ownedRotationRadius * offset;
-            timer += Time.deltaTime;
         }
     }
 
@@ -29,7 +30,8 @@ public class Chicken : MonoBehaviour
     {
         owner = _owner;
 
-        timer = 0f;
+        ownedIndex = owner.nOwnedChickens;
+        owner.nOwnedChickens++;
 
         GetComponentInChildren<Collider>().enabled = false;
     }

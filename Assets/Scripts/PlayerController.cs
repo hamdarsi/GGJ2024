@@ -7,12 +7,14 @@ public class PlayerController : MonoBehaviour
 {
     Vector2 steering;
 
-    void Start()
-    {        
-    }
+    public int nOwnedChickens { get; set; }
 
     public float forceMagnitude = 1f;
     public float rotationSpeed = 10f;
+
+    void Start()
+    {
+    }
     
     void FixedUpdate()
     {
