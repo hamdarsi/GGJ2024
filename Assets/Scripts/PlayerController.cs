@@ -12,11 +12,11 @@ public class PlayerController : MonoBehaviour
     }
 
     public float forceMagnitude = 1f;
+    public float rotationSpeed = 10f;
     
     void FixedUpdate()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        //gas , steering -> Force + torque
 
         steering.x = Input.GetAxis("Horizontal");
         steering.y = Input.GetAxis("Vertical");
@@ -25,7 +25,11 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(forceMagnitude * force);
 
-        transform.forward = rb.velocity.normalized;
+        if (rb.velocity.sqrMagnitude > 0.001f)
+        {
+            transform.forward = Vector3.Lerp(transform.forward
+                , rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
+        }
     }
 
     private void Reset()
