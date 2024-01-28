@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public GameObject playerPrefab;
     public Transform playerRoot;
     public CinemachineTargetGroup cinemachineTargetGroup;
+    public Material[] playerMaterials;
     
     private List<PlayerController> players = new();
 
@@ -20,19 +21,21 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         var deltaAngle = 360f / howManyPlayers * Mathf.Deg2Rad;
-        var angle = 0f;
+        var angle = 180f;
         for (var i = 0; i < howManyPlayers; ++i)
         {
             var p = new Vector3(initialPlayerSpawnDistance * Mathf.Cos(angle), 0, initialPlayerSpawnDistance*Mathf.Sin(angle));
             var playerObject = Instantiate(playerPrefab, playerRoot);
             playerObject.transform.position = p;
             playerObject.transform.LookAt(Vector3.zero);
+            cinemachineTargetGroup.AddMember(playerObject.transform, 1, 1);
+            
             var playerScript = playerObject.GetComponent<PlayerController>();
             playerScript.playerNumber = i + 1;
+            playerScript.material = playerMaterials[i];
             players.Add(playerScript);
-            angle += deltaAngle;
             
-            cinemachineTargetGroup.AddMember(playerObject.transform, 1, 1);
+            angle += deltaAngle;
         }
     }
 }

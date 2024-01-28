@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
     public int playerNumber;
     public float forceMagnitude = 1f;
     public float rotationSpeed = 10f;
-    // public TMP_Text debugText;
+    public Material material;
+    public GameObject materialSurface;
     
     void Start()
     {
@@ -35,6 +36,8 @@ public class PlayerController : MonoBehaviour
             keyboardKeys.Add(KeyCode.RightArrow);
             keyboardKeys.Add(KeyCode.Return);
         }
+
+        materialSurface.GetComponent<MeshRenderer>().material = material;
     }
 
     void FixedUpdate()
