@@ -31,6 +31,7 @@ public class Chicken : MonoBehaviour
         owner = _owner;
         ownedIndex = owner.ownedChickens.Count;
         GetComponentInChildren<Collider>().enabled = false;
+        transform.localScale = 0.5f * Vector3.one;
     }
 
     public bool IsOwned()

@@ -19,8 +19,23 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 10f;
     public Material material;
     public GameObject materialSurface;
+
     public AudioSource audioIdle;
     public AudioSource audioRunning;
+
+    float lastCollisionTime = 0f;
+    public float collisionCooldownTime = 1f;
+    public float stunMaxTime = 1;
+
+    bool stunned = false;
+    float stunTimer;
+    public float stunRotationSpeed = 3f;
+
+    bool attacking = false;
+    public float attackForce = 100;
+    public float attackLength = 0.5f;
+    public float attackCooldown = 1f;
+    float attackTimer = 0f;
     
     void Start()
     {
@@ -62,15 +77,30 @@ public class PlayerController : MonoBehaviour
                 OnPlayerActionButtonPress(default);
         }
 
-        steering = keyboardSteeringInput.sqrMagnitude > 0 ? keyboardSteeringInput : joyStickSteeringInput;
-        
-        var rb = GetComponent<Rigidbody>();
-        var force = new Vector3(steering.x, 0f, steering.y);
+        if (stunned)
+        {
+            transform.Rotate(Vector3.up, Time.fixedDeltaTime * stunRotationSpeed);
+            stunTimer -= Time.fixedDeltaTime;
+            if(stunTimer < 0)
+            {
+                stunned = false;
+            }
+        }
+        else
+        {
+            steering = keyboardSteeringInput.sqrMagnitude > 0 ? keyboardSteeringInput : joyStickSteeringInput;
 
-        rb.AddForce(forceMagnitude * force);
+            var rb = GetComponent<Rigidbody>();
+            var force = new Vector3(steering.x, 0f, steering.y);
 
-        if (rb.velocity.sqrMagnitude > 0.001f)
-          transform.forward = Vector3.Lerp(transform.forward, rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
+            rb.AddForce(forceMagnitude * force);
+
+            if (rb.velocity.sqrMagnitude > 0.001f)
+                transform.forward = Vector3.Lerp(transform.forward, rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
+        }
+
+        attackTimer -= Time.fixedDeltaTime;
+        attacking = attackTimer > 0;
     }
 
     public void OnPlayerDirectionInput(InputAction.CallbackContext context)
@@ -80,7 +110,14 @@ public class PlayerController : MonoBehaviour
 
     public void OnPlayerActionButtonPress(InputAction.CallbackContext context)
     {
-        
+        if (attacking || attackTimer > 0f) return;
+
+        var rb = GetComponent<Rigidbody>();
+
+        rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
+
+        attacking = true;
+        attackTimer = attackCooldown;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -95,14 +132,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "Player"
+            && (Time.time - lastCollisionTime) > collisionCooldownTime)
         {
-            Debug.Log(Time.time);
+            lastCollisionTime = Time.time;
             if (ownedChickens.Count > 0)
             {
+                // remove one chicken
                 Chicken c = ownedChickens[ownedChickens.Count - 1];
                 GameObject.Destroy(c.gameObject);
                 ownedChickens.RemoveAt(ownedChickens.Count - 1);
+            }
+            else
+            {
+                // stun
+                Stun();
             }
         }
     }
@@ -117,5 +161,12 @@ public class PlayerController : MonoBehaviour
     {
         frozen = true;
         audioIdle.Play();
+    }
+    void Stun()
+    {
+        if (stunned) return;
+
+        stunned = true;
+        stunTimer = stunMaxTime;
     }
 }
