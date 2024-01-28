@@ -155,19 +155,22 @@ public class PlayerController : MonoBehaviour
 
             PlayerController op = collision.gameObject.GetComponent<PlayerController>();
 
-            if (ownedChickens.Count > 0 && !attacking)
+            if (!attacking)
             {
-                // remove one chicken
-                Chicken c = ownedChickens[ownedChickens.Count - 1];
-                GameObject.Destroy(c.gameObject);
-                ownedChickens.RemoveAt(ownedChickens.Count - 1);
+                if (ownedChickens.Count > 0)
+                {
+                    // remove one chicken
+                    Chicken c = ownedChickens[ownedChickens.Count - 1];
+                    GameObject.Destroy(c.gameObject);
+                    ownedChickens.RemoveAt(ownedChickens.Count - 1);
+                }
+                else
+                {
+                    Stun();
+                }
             }
 
             if (op.attacking)
-            {
-                Stun();
-            }
-            else if (!attacking && ownedChickens.Count == 0)
             {
                 Stun();
             }

@@ -11,6 +11,9 @@ public class Chicken : MonoBehaviour
     public float ownedRotationSpeed = 5f;
     public float ownedRotationRadius = 1f;
 
+    public float oscilation = 0.5f;
+    public float oscilationSpeed = 1f;
+
     void Start()
     {
     }
@@ -23,6 +26,12 @@ public class Chicken : MonoBehaviour
             float theta = ownedRotationSpeed * Time.time + initTheta;
             Vector3 offset = new Vector3 (Mathf.Sin(theta), 0f, Mathf.Cos(theta));
             transform.position = owner.transform.position + ownedRotationRadius * offset;
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x
+                , oscilation * (Mathf.Sin(Time.time * oscilationSpeed) + 1f) / 2f
+                , transform.position.z);
         }
     }
 
