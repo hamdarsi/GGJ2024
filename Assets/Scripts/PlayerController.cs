@@ -1,54 +1,83 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Vector2 steering;
-
     public int nOwnedChickens { get; set; }
+    private Vector2 steering;
+    private Vector2 joyStickSteeringInput;
+    private Vector2 keyboardSteeringInput;
+    
+    private readonly List<KeyCode> keyboardKeys = new();
 
+    public int playerNumber;
     public float forceMagnitude = 1f;
     public float rotationSpeed = 10f;
-
+    public TMP_Text debugText;
+    
     void Start()
     {
+        if (playerNumber == 1)
+        {
+            keyboardKeys.Add(KeyCode.W);
+            keyboardKeys.Add(KeyCode.S);
+            keyboardKeys.Add(KeyCode.A);
+            keyboardKeys.Add(KeyCode.D);
+            keyboardKeys.Add(KeyCode.Space);
+        }
+        else if (playerNumber == 2)
+        {
+            keyboardKeys.Add(KeyCode.UpArrow);
+            keyboardKeys.Add(KeyCode.DownArrow);
+            keyboardKeys.Add(KeyCode.LeftArrow);
+            keyboardKeys.Add(KeyCode.RightArrow);
+            keyboardKeys.Add(KeyCode.Return);
+        }
     }
-    
+
     void FixedUpdate()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+        keyboardSteeringInput.x = 0;
+        keyboardSteeringInput.y = 0;
+        if (keyboardKeys.Count > 0)
+        {
+            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[0]) ? -1 : 0;
+            keyboardSteeringInput.y += Input.GetKey(keyboardKeys[1]) ? 1 : 0;
+            keyboardSteeringInput.x += Input.GetKey(keyboardKeys[2]) ? -1 : 0;
+            keyboardSteeringInput.x += Input.GetKey(keyboardKeys[3]) ? 1 : 0;
 
-        steering.x = Input.GetAxis("Horizontal");
-        steering.y = Input.GetAxis("Vertical");
+            if (Input.GetKeyDown(keyboardKeys[4]))
+                OnPlayerActionButtonPress(default);
+        }
 
-        Vector3 force = new Vector3(steering.x, 0f, steering.y);
+        steering = keyboardSteeringInput.sqrMagnitude > 0 ? keyboardSteeringInput : joyStickSteeringInput;
+        
+        debugText.text = steering.ToString();
+        var rb = GetComponent<Rigidbody>();
+        var force = new Vector3(steering.x, 0f, steering.y);
 
         rb.AddForce(forceMagnitude * force);
 
         if (rb.velocity.sqrMagnitude > 0.001f)
-        {
-            transform.forward = Vector3.Lerp(transform.forward
-                , rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
-        }
+          transform.forward = Vector3.Lerp(transform.forward, rb.velocity.normalized, rotationSpeed * Time.fixedDeltaTime);
     }
 
-    private void Reset()
+    public void OnPlayerDirectionInput(InputAction.CallbackContext context)
     {
+        joyStickSteeringInput = context.ReadValue<Vector2>();
     }
 
-    public void ApplyControls(Vector2 _steering)
+    public void OnPlayerActionButtonPress(InputAction.CallbackContext context)
     {
-        steering = _steering;
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Chicken c = other.gameObject.GetComponentInParent<Chicken>();
+        var c = other.gameObject.GetComponentInParent<Chicken>();
         if(c != null)
-        {
             c.SetOwner(this);
-        }
     }
 }
