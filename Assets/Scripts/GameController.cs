@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public CinemachineTargetGroup cinemachineTargetGroup;
     public Material[] playerMaterials;
     public AudioSource matchStartAudio;
+    public AudioSource matchInProgressAudio;
     
     private readonly List<PlayerController> players = new();
 
@@ -28,6 +29,7 @@ public class GameController : MonoBehaviour
         InitializePlayers();
         matchStartAudio.Play();
         yield return new WaitForSeconds(3);
+        matchInProgressAudio.Play();
         foreach (var player in players)
             player.Unfreeze();
     }
