@@ -47,7 +47,7 @@ public class Spawner : MonoBehaviour
 
 	void ResetTimer()
 	{
-		timer = Random.Range(2.5f, 5f);
+		timer = Random.Range(1f, 5f);
 	}
 
 	Vector3 GetRandomPos()

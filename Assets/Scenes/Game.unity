@@ -1239,7 +1239,7 @@ PrefabInstance:
     - target: {fileID: 2887436154482026273, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
         type: 3}
       propertyPath: maxChickens
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2887436154482026273, guid: 1a15c749622fb8a48abbf2cd0e7428a4,
         type: 3}

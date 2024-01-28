@@ -100,14 +100,14 @@ MonoBehaviour:
   ownedChickens: []
   playerNumber: 0
   forceMagnitude: 25
-  rotationSpeed: 10
+  rotationSpeed: 20
   material: {fileID: 2100000, guid: 5bf34fa92bbfa3740a54e31c38b11fa9, type: 2}
   materialSurface: {fileID: 2803897892269725448}
   audioIdle: {fileID: 5092832179479872368}
   audioRunning: {fileID: 5840674410811561537}
   collisionCooldownTime: 1
   stunMaxTime: 1
-  stunRotationSpeed: 3
+  stunRotationSpeed: 1000
   attackForce: 30
   attackLength: 0.5
   attackCooldown: 1
