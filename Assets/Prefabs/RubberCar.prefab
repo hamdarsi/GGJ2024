@@ -113,6 +113,8 @@ MonoBehaviour:
   attackLength: 0.5
   attackCooldown: 0.5
   scoreText: {fileID: 0}
+  collisionPE: {fileID: 7691564723945306030, guid: bb27d26f90481884c84d0cedc8c42362,
+    type: 3}
 --- !u!114 &5641577802215404422
 MonoBehaviour:
   m_ObjectHideFlags: 0

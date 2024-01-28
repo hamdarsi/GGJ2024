@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
 
+    public GameObject collisionPE;
+
     void Start()
     {
         if (playerNumber == 1)
@@ -179,6 +181,9 @@ public class PlayerController : MonoBehaviour
             {
                 score += 50;
             }
+
+            GameObject test = GameObject.Instantiate(collisionPE, collision.contacts[0].point, Quaternion.identity);
+            //GameObject.Destroy(test, 1f);
         }
     }
 
